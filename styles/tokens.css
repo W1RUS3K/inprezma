@@ -1,0 +1,85 @@
+/* =====================================================================
+   Inprezma — design tokens
+   Paleta wyciągnięta z grafiki maskotki:
+   navy = kolor wiodący, red/yellow = CTA, pink/green = akcenty.
+   ===================================================================== */
+:root {
+  /* Brand — niebieski (główny kolor firmy) */
+  --navy:        #0E466A;
+  --navy-deep:   #082C44;
+  --sky:         #1e84bd;
+  --sky-deep:    #2E8BBF;
+
+  /* CTA i akcenty */
+  --red:         #E64237;   /* CTA główne — dach domku */
+  --red-deep:    #B5251B;
+  --yellow:      #FFBD33;   /* CTA wtórne — ściany */
+  --yellow-deep: #E5A41C;
+  --pink:        #F4A09E;   /* miękki akcent */
+  --pink-deep:   #D97A78;
+  --green:       #6FBD45;   /* trawa, drobny akcent */
+  --green-deep:  #4F9531;
+
+  /* Tła i powierzchnie */
+  --cream:       #FFF7E8;
+  --cream-2:     #FEF0E0;
+  --white:       #FFFFFF;
+
+  /* Aliasy dla wstecznej kompatybilności - poprzednie nazwy mapowane na nowe */
+  --orange:      var(--sky);
+  --orange-deep: var(--sky-deep);
+
+  /* Admin-specific tokeny */
+  --bg:          #f7f5f1;       /* neutralne tło panelu */
+  --blue:        var(--sky);
+  --blue-soft:   var(--line-soft);
+  --orange-soft: #ffedd5;
+  --gray-soft:   #e5e5e5;
+
+  /* Tekst */
+  --ink:         var(--navy);
+  --ink-soft:    #2E6480;
+  --ink-mute:    #78716c;       /* szary do mniej istotnych tekstów na jasnym tle */
+
+  /* Linie / obramowania */
+  --line:        #B8D8EB;
+  --line-soft:   #D6ECF8;
+
+  /* Stany */
+  --green-soft:  #bbf7d0;
+  --red-soft:    #fecaca;
+
+  /* Cienie */
+  --shadow-sm:   0 2px 0 rgba(14, 70, 106, 0.06), 0 1px 2px rgba(14, 70, 106, 0.06);
+  --shadow-md:   0 8px 24px -8px rgba(30, 132, 189, 0.25), 0 2px 6px rgba(14, 70, 106, 0.08);
+  --shadow-lg:   0 24px 60px -20px rgba(30, 132, 189, 0.35), 0 8px 20px -8px rgba(14, 70, 106, 0.15);
+}
+
+/* =====================================================================
+   Reset i podstawy
+   ===================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+html, body            { margin: 0; padding: 0; }
+html                  { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button { font-family: inherit; cursor: pointer; }
+
+/* Typography helpers */
+.display         { font-family: 'Fraunces', serif; font-weight: 800; letter-spacing: -0.02em; }
+.display-italic  { font-family: 'Fraunces', serif; font-style: italic; font-weight: 700; }
+.mono            { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+/* Utility — .hidden z !important, żeby zawsze wygrywało nad innymi regułami.
+   JS używa classList.add/remove('hidden') zamiast style.display. */
+.hidden          { display: none !important; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}

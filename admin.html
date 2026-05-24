@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Inprezma · Panel administratora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles/tokens.css" />
+<link rel="stylesheet" href="styles/admin.css" />
+</head>
+<body>
+
+<!-- Login screen -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-mark"><span>i</span></div>
+    <h1 class="display">Panel administratora</h1>
+    <p>Wpisz hasło, aby kontynuować</p>
+    <form id="loginForm">
+      <label for="pwd">Hasło</label>
+      <input id="pwd" type="password" inputmode="numeric" autocomplete="off" maxlength="20" autofocus />
+      <div class="err" id="loginErr"></div>
+      <button type="submit" class="btn btn-primary btn-block-sm">Zaloguj się</button>
+    </form>
+  </div>
+</div>
+
+<!-- Admin app -->
+<div class="admin hidden" id="adminApp">
+  <aside class="sidebar">
+    <div class="side-brand">
+      <div class="mark"><span>i</span></div>
+      <div>
+        <div class="name">Inprezma</div>
+        <small>Panel admin</small>
+      </div>
+    </div>
+    <nav class="side-nav">
+      <button data-page="bookings" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Zgłoszenia
+        <span class="badge" id="newCountBadge">0</span>
+      </button>
+      <button data-page="calendar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 10h18"/><circle cx="8" cy="15" r="1.5" fill="currentColor"/><circle cx="12" cy="15" r="1.5" fill="currentColor"/><circle cx="16" cy="15" r="1.5" fill="currentColor"/></svg>
+        Kalendarz
+      </button>
+      <button data-page="contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Kontakt
+        <span class="badge" id="newMsgBadge">0</span>
+      </button>
+      <button data-page="offers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+        Oferty
+      </button>
+      <button data-page="media">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4-4-7 7"/></svg>
+        Media
+      </button>
+    </nav>
+    <div class="side-foot">
+      <button id="seedDemo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Dodaj dane demo
+      </button>
+      <button id="logoutBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+        Wyloguj
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <!-- Bookings page -->
+    <section id="page-bookings">
+      <div class="page-head">
+        <div>
+          <h1 class="display">Zgłoszenia</h1>
+          <p>Lista rezerwacji ze strony klientów. Kliknij, aby zobaczyć szczegóły.</p>
+        </div>
+      </div>
+
+      <div class="filters" id="statusFilters"></div>
+
+      <div class="booking-grid">
+        <div class="booking-list" id="bookingList"></div>
+        <aside class="detail-panel" id="detailPanel">
+          <div class="detail-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            <h3>Wybierz zgłoszenie</h3>
+            <p>Kliknij dowolne zgłoszenie z listy, aby zobaczyć szczegóły.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Calendar page -->
+    <section id="page-calendar" class="hidden">
+      <div class="page-head">
+        <div>
+          <h1 class="display">Kalendarz dostępności</h1>
+          <p>Zobacz, co i kiedy jest zarezerwowane. Kliknij dzień, aby ręcznie zablokować lub zarządzać blokadami.</p>
+        </div>
+      </div>
+
+      <div class="cal-page">
+        <div class="cal-toolbar">
+          <div class="cal-month-nav">
+            <button id="calPrev" aria-label="Poprzedni miesiąc"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></button>
+            <h2 id="calTitle">Miesiąc</h2>
+            <button id="calNext" aria-label="Następny miesiąc"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg></button>
+          </div>
+          <div class="product-filter" id="productFilter"></div>
+        </div>
+
+        <div class="admin-cal-grid" id="adminCalGrid"></div>
+      </div>
+    </section>
+
+    <!-- Contact messages page -->
+    <section id="page-contact" class="hidden">
+      <div class="page-head">
+        <div>
+          <h1 class="display">Wiadomości kontaktowe</h1>
+          <p>Zapytania wysłane przez formularz kontaktowy ze strony głównej.</p>
+        </div>
+      </div>
+      <div class="filters" id="msgFilters"></div>
+      <div class="booking-grid">
+        <div class="booking-list" id="messageList"></div>
+        <aside class="detail-panel" id="messageDetail">
+          <div class="detail-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <h3>Wybierz wiadomość</h3>
+            <p>Kliknij dowolną wiadomość z listy, aby zobaczyć pełną treść.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Offers page (product catalog management) -->
+    <section id="page-offers" class="hidden">
+      <div class="page-head">
+        <div>
+          <h1 class="display">Oferty / Atrakcje</h1>
+          <p>Zarządzaj katalogiem atrakcji wyświetlanych na stronie głównej. Edytuj ceny, zdjęcia, opisy lub dodaj nową atrakcję.</p>
+        </div>
+        <div class="row-flex">
+          <button class="btn btn-ghost" id="offersReset" title="Przywróć katalog do stanu fabrycznego (8 atrakcji)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+            Przywróć domyślne
+          </button>
+          <button class="btn btn-primary" id="offersAdd">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            Dodaj atrakcję
+          </button>
+        </div>
+      </div>
+      <div class="offers-grid" id="offersList"></div>
+    </section>
+
+    <!-- Media management page -->
+    <section id="page-media" class="hidden">
+      <div class="page-head">
+        <div>
+          <h1 class="display">Media</h1>
+          <p>Zdjęcia używane na stronie głównej: baner (hero), zdjęcie zespołu, karuzela galerii. Każde zdjęcie można przyciąć do właściwego formatu przy wgrywaniu.</p>
+        </div>
+      </div>
+
+      <div class="media-sections">
+
+        <!-- Hero -->
+        <div class="media-section">
+          <div class="media-section-head">
+            <div>
+              <h3>Hero (baner główny)</h3>
+              <small>Wyświetla się na samej górze strony. Format poziomy 16:9.</small>
+            </div>
+            <button class="btn btn-primary" id="mediaHeroUpload">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Wgraj nowe
+            </button>
+          </div>
+          <div class="media-preview media-preview-hero" id="mediaHeroPreview">
+            <div class="media-placeholder">Brak zdjęcia — używana jest grafika domyślna</div>
+          </div>
+          <div class="media-actions">
+            <button class="btn btn-danger hidden" id="mediaHeroRemove">Usuń zdjęcie</button>
+          </div>
+        </div>
+
+        <!-- Team -->
+        <div class="media-section">
+          <div class="media-section-head">
+            <div>
+              <h3>Zdjęcie zespołu (sekcja „O nas")</h3>
+              <small>Wyświetla się obok tekstu „O nas". Format pionowy 4:5.</small>
+            </div>
+            <button class="btn btn-primary" id="mediaTeamUpload">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Wgraj nowe
+            </button>
+          </div>
+          <div class="media-preview media-preview-team" id="mediaTeamPreview">
+            <div class="media-placeholder">Brak zdjęcia — używana jest grafika domyślna</div>
+          </div>
+          <div class="media-actions">
+            <button class="btn btn-danger hidden" id="mediaTeamRemove">Usuń zdjęcie</button>
+          </div>
+        </div>
+
+        <!-- Gallery -->
+        <div class="media-section">
+          <div class="media-section-head">
+            <div>
+              <h3>Karuzela galerii</h3>
+              <small>Zdjęcia przewijające się na stronie. Dodaj minimum 5 zdjęć, by karuzela wyglądała dobrze. Format pionowy 4:5.</small>
+            </div>
+            <button class="btn btn-primary" id="mediaGalleryUpload">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              Dodaj zdjęcie
+            </button>
+          </div>
+          <div class="gallery-grid" id="mediaGalleryGrid"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- Image cropper modal -->
+<div class="modal-backdrop" id="cropperModal">
+  <div class="modal modal--md">
+    <h3 id="cropperTitle">Przytnij zdjęcie</h3>
+    <p class="modal-help">Przesuwaj i przybliżaj zdjęcie, żeby wypełnić ramkę tym, co ma być widoczne.</p>
+
+    <div class="cropper-stage" id="cropperStage">
+      <div class="cropper-frame" id="cropperFrame">
+        <canvas id="cropperCanvas"></canvas>
+        <div class="cropper-overlay"></div>
+      </div>
+    </div>
+
+    <div class="cropper-controls">
+      <label>Powiększenie</label>
+      <input type="range" id="cropperZoom" min="1" max="3" step="0.01" value="1" />
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="cropperCancel">Anuluj</button>
+      <button type="button" class="btn btn-primary" id="cropperSave">Zapisz</button>
+    </div>
+  </div>
+</div>
+
+<!-- (hidden) file input for media uploads -->
+<input type="file" id="mediaFileInput" accept="image/*" class="hidden" />
+
+<!-- Offer editor modal -->
+<div class="modal-backdrop" id="offerModal">
+  <div class="modal modal--lg">
+    <h3 id="offerModalTitle">Edytuj atrakcję</h3>
+    <p id="offerModalSub" class="modal-subtitle">Wypełnij dane atrakcji. Zmiany pojawią się od razu na stronie głównej.</p>
+
+    <form id="offerForm" class="offer-form">
+      <div class="offer-form-row">
+        <div class="field">
+          <label>Nazwa *</label>
+          <input type="text" name="name" required placeholder="np. Dmuchaniec Dino" />
+        </div>
+        <div class="field">
+          <label>Kategoria</label>
+          <select name="cat">
+            <option value="dmuchance">Dmuchańce</option>
+            <option value="zamki">Zamki</option>
+            <option value="atrakcje">Atrakcje (byk, piana, bokser)</option>
+            <option value="stroje">Stroje</option>
+            <option value="inne">Inne</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="offer-form-row">
+        <div class="field">
+          <label>Wymiary</label>
+          <input type="text" name="size" placeholder="np. 8 × 4,5 × 7 m" />
+        </div>
+        <div class="field">
+          <label>Przedział wiekowy (tekst na karcie)</label>
+          <input type="text" name="ageLabel" placeholder="np. 3-12 lat" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Grupa wiekowa (do filtra na stronie)</label>
+        <select name="age">
+          <option value="maluchy">Maluchy (do ok. 5 lat)</option>
+          <option value="malolaty">Małolaty (3-12 lat)</option>
+          <option value="starsze">Starsze / dorośli (8+ lat)</option>
+          <option value="wszyscy">Wszyscy (każdy wiek)</option>
+        </select>
+      </div>
+
+      <div class="offer-form-row">
+        <div class="field">
+          <label>Kolor w kalendarzu</label>
+          <div class="color-picker-row">
+            <input type="color" name="color" value="#0E466A" id="offerColorInput" />
+            <input type="text" name="colorHex" id="offerColorHex" placeholder="#0E466A" maxlength="7" />
+            <div class="color-preview-chip" id="offerColorPreview">podgląd</div>
+          </div>
+          <small class="field-hint">Kolor tła chipa w kalendarzu admina przy rezerwacjach tej atrakcji.</small>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Krótki opis</label>
+        <textarea name="desc" rows="2" placeholder="np. Wielki dmuchaniec z dinozaurem. Zjeżdżalnia, ścianka, miękkie wnętrze."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Dodatkowy opis (opcjonalny — wyświetla się z ikoną zegarka)</label>
+        <input type="text" name="eventInfo" placeholder="np. 2× wystrzały po 10 min · płyn z certyfikatem" />
+      </div>
+
+      <h4 class="offer-form-section">💰 Cennik</h4>
+      <div class="offer-form-row">
+        <div class="field">
+          <label>Cena weekend (sob/nd) *</label>
+          <input type="number" name="priceWeekend" min="0" step="10" required placeholder="500" />
+        </div>
+        <div class="field">
+          <label>Cena tydzień (pn-pt)</label>
+          <input type="number" name="priceWeek" min="0" step="10" placeholder="450" />
+        </div>
+      </div>
+
+      <div class="offer-form-row">
+        <div class="field">
+          <label>Rodzaj wynajmu</label>
+          <select name="mode">
+            <option value="daily">Dzienny (mnoży się × ilość dni)</option>
+            <option value="event">Imprezowy (cena stała, niezależna od dni)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Jednostka (etykieta)</label>
+          <input type="text" name="unit" placeholder="zł / dzień  ·  zł / 4 h  ·  zł / impreza" />
+        </div>
+      </div>
+
+      <h4 class="offer-form-section">👷 Obsługa</h4>
+      <div class="offer-form-row">
+        <div class="field">
+          <label>Cena obsługi (zł)</label>
+          <input type="number" name="obslugaPrice" min="0" step="10" placeholder="150" />
+        </div>
+        <div class="field field--stretch">
+          <label class="checkbox-inline">
+            <input type="checkbox" name="obslugaIncluded" />
+            <span>Obsługa wliczona w cenę (np. byk rodeo)</span>
+          </label>
+        </div>
+      </div>
+
+      <h4 class="offer-form-section">🖼️ Zdjęcie</h4>
+      <div class="field">
+        <label>Wybierz zdjęcie z dysku (jpg/png, max ~2 MB)</label>
+        <input type="file" name="photoFile" accept="image/*" id="offerPhotoFile" />
+        <div id="offerPhotoPreview" class="offer-photo-preview"></div>
+        <button type="button" class="btn btn-ghost hidden" id="offerPhotoClear">Usuń zdjęcie</button>
+      </div>
+
+      <h4 class="offer-form-section">🏷️ Dodatkowe</h4>
+      <div class="offer-form-row">
+        <div class="field">
+          <label>Etykieta (badge)</label>
+          <input type="text" name="badge" placeholder="Bestseller / Nowość / Hit / ..." />
+        </div>
+        <div class="field">
+          <label>Identyfikator (slug)</label>
+          <input type="text" name="id" placeholder="auto" class="mono input--id" />
+        </div>
+      </div>
+
+      <label class="checkbox-inline checkbox-inline--spaced">
+        <input type="checkbox" name="hidden" />
+        <span>Ukryj na stronie (np. produkt sezonowy)</span>
+      </label>
+
+      <div class="modal-actions">
+        <button type="button" class="btn btn-danger btn--push-left hidden" id="offerDelete">Usuń atrakcję</button>
+        <button type="button" class="btn btn-ghost" id="offerCancel">Anuluj</button>
+        <button type="submit" class="btn btn-primary">Zapisz</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Day detail / block modal -->
+<div class="modal-backdrop" id="dayModal">
+  <div class="modal">
+    <h3 id="dayModalTitle">Dzień</h3>
+    <p id="dayModalSub">Dodaj ręczną blokadę lub zobacz, co jest już zarezerwowane.</p>
+
+    <div id="dayModalExisting" class="day-modal-section"></div>
+
+    <form id="blockForm">
+      <div class="field">
+        <label>Dmuchaniec</label>
+        <select name="productId" id="blockProduct" required></select>
+      </div>
+      <div class="grid-2-col">
+        <div class="field"><label>Od</label><input type="date" name="dateFrom" id="blockFrom" required /></div>
+        <div class="field"><label>Do</label><input type="date" name="dateTo" id="blockTo" required /></div>
+      </div>
+      <div class="field">
+        <label>Notatka (opcjonalnie)</label>
+        <input type="text" name="note" id="blockNote" placeholder="np. klient z telefonu — Maciek 600 700 800" />
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="dayModalClose">Zamknij</button>
+        <button type="submit" class="btn btn-primary">Zablokuj termin</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="storage.js"></script>
+<script src="scripts/admin.js"></script>
+</body>
+</html>
